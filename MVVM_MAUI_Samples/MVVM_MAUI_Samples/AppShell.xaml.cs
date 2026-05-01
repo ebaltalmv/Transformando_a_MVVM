@@ -1,4 +1,4 @@
-﻿namespace MVVM_MAUI_Samples
+namespace MVVM_MAUI_Samples
 {
     public partial class AppShell : Shell
     {

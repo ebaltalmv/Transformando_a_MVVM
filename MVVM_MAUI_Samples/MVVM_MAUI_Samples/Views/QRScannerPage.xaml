@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:MVVM_MAUI_Samples.ViewModels"
+             xmlns:converters="clr-namespace:MVVM_MAUI_Samples.Converters"
+             x:Class="MVVM_MAUI_Samples.Views.QRScannerPage"
+             Title="Control de Acceso QR">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StatusColorConverter x:Key="StatusColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Header -->
+            <Label Text="Control de Acceso por QR"
+                   FontSize="22" FontAttributes="Bold" HorizontalOptions="Center" />
+
+            <!-- Connectivity Status Bar -->
+            <Border Stroke="LightGray" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="12">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Estado de Conectividad" FontAttributes="Bold" FontSize="14" />
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="Red:" FontSize="13" TextColor="Gray" />
+                        <Label Text="{Binding NetworkStatus}" FontSize="13" FontAttributes="Italic" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="Perfil:" FontSize="13" TextColor="Gray" />
+                        <Label Text="{Binding ConnectionProfile}" FontSize="13" FontAttributes="Italic" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- QR Input -->
+            <Entry Placeholder="Introduce el ID del QR simulado"
+                   Text="{Binding QrInput}"
+                   ClearButtonVisibility="WhileEditing" />
+
+            <!-- Scan Button -->
+            <Button Text="📷  Escanear QR y Validar"
+                    Command="{Binding SimulateScanCommand}"
+                    IsEnabled="{Binding IsNotScanning}"
+                    FontAttributes="Bold" />
+
+            <ActivityIndicator IsRunning="{Binding IsScanning}" IsVisible="{Binding IsScanning}" />
+
+            <!-- Captured Photo Preview -->
+            <Border Stroke="LightGray" StrokeThickness="1" StrokeShape="RoundRectangle 8"
+                    Padding="8" IsVisible="{Binding ShowCapturedPhoto}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Evidencia Fotográfica:" FontAttributes="Bold" FontSize="14" />
+                    <Image Source="{Binding CapturedPhotoPath}" HeightRequest="200" Aspect="AspectFit" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Events History -->
+            <Label Text="Historial de Accesos:" FontAttributes="Bold" FontSize="16" Margin="0,10,0,0" />
+
+            <CollectionView ItemsSource="{Binding Events}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="LightGray" StrokeThickness="1" StrokeShape="RoundRectangle 8"
+                                Padding="12" Margin="0,0,0,10">
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="{Binding Status}" FontAttributes="Bold" FontSize="15"
+                                       TextColor="{Binding Status, Converter={StaticResource StatusColorConverter}}" />
+                                <Label Text="{Binding QRIdentifier, StringFormat='QR: {0}'}" FontSize="14" />
+                                <Label Text="{Binding Timestamp, StringFormat='Fecha: {0:g}'}" FontSize="13" TextColor="Gray" />
+                                <Label Text="{Binding AccessPointId, StringFormat='Punto: {0}'}" FontSize="13" />
+                                <Label Text="{Binding NetworkStatus, StringFormat='Red: {0}'}" FontSize="12" TextColor="Gray" />
+                                <Label Text="{Binding ConnectionProfile, StringFormat='Perfil: {0}'}" FontSize="12" TextColor="Gray" />
+                                <HorizontalStackLayout Spacing="12">
+                                    <Label Text="{Binding ScannerLatitude, StringFormat='Lat: {0:F6}'}" FontSize="11" TextColor="DimGray" />
+                                    <Label Text="{Binding ScannerLongitude, StringFormat='Lon: {0:F6}'}" FontSize="11" TextColor="DimGray" />
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

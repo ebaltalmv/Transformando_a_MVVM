@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
+using MVVM_MAUI_Samples.ViewModels;
+using MVVM_MAUI_Samples.Views;
+using SharedResources.Models;
 
 namespace MVVM_MAUI_Samples
 {
@@ -16,8 +19,23 @@ namespace MVVM_MAUI_Samples
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
+
+            // Models
+            builder.Services.AddSingleton<ConnectivityModel>();
+            builder.Services.AddSingleton<GeolocationModel>();
+            builder.Services.AddSingleton<MediaPickerModel>();
+            builder.Services.AddSingleton<QRScannerModel>();
+
+            // ViewModels
+            builder.Services.AddTransient<ConnectivityViewModel>();
+            builder.Services.AddTransient<GeolocationViewModel>();
+            builder.Services.AddTransient<MediaPickerViewModel>();
+            builder.Services.AddTransient<QRScannerViewModel>();
+
+            // Views
+            builder.Services.AddTransient<QRScannerPage>();
 
             return builder.Build();
         }

@@ -76,4 +76,8 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.7" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\SharedResources\SharedResources.csproj" />
+	</ItemGroup>
+
 </Project>
